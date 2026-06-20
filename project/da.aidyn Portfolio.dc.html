@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700,800&amp;display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: #f8f8f5; color: #111; font-family: 'General Sans', sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    ::selection { background: rgba(0,0,0,0.12); }
+    [data-pstep-title] { font-size: 17px; font-weight: 500; color: rgba(0,0,0,0.28); line-height: 1.3; margin: 0; cursor: default; transition: none; }
+    [data-pstep-desc]  { overflow: hidden; }
+    [data-pstep-num]   { font-size: 12px; font-weight: 500; color: rgba(0,0,0,0.28); letter-spacing: 0.08em; min-width: 28px; flex-shrink: 0; padding-top: 3px; font-variant-numeric: tabular-nums; }
+    @keyframes heroIn { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes scrollDrop { 0%,100%{opacity:.3;transform:translateY(0);} 50%{opacity:.8;transform:translateY(9px);} }
+  </style>
+</helmet>
+
+<!-- ════════════════════ NAV ════════════════════ -->
+<nav style="{{ navStyle }}">
+  <span style="{{ navLogo }}">da.aidyn</span>
+  <div style="{{ navLinks }}">
+    <button onClick="{{ goHome }}" style="{{ nlb }}" style-hover="{{ nlbHover }}">Главная</button>
+    <button onClick="{{ goProcess }}" style="{{ nlb }}" style-hover="{{ nlbHover }}">Процесс</button>
+    <button onClick="{{ goCases }}" style="{{ nlb }}" style-hover="{{ nlbHover }}">Кейсы</button>
+    <button onClick="{{ goContact }}" style="{{ nlb }}" style-hover="{{ nlbHover }}">Контакт</button>
+  </div>
+  <button onClick="{{ goContact }}" style="{{ navCta }}" style-hover="{{ navCtaHover }}">Связаться</button>
+  <button onClick="{{ toggleMenu }}" style="{{ hamBtn }}">{{ menuIcon }}</button>
+</nav>
+
+<div style="{{ mobileMenu }}">
+  <button onClick="{{ goHome }}" style="{{ mlb }}" style-hover="color: #111;">Главная</button>
+  <button onClick="{{ goProcess }}" style="{{ mlb }}" style-hover="color: #111;">Процесс</button>
+  <button onClick="{{ goCases }}" style="{{ mlb }}" style-hover="color: #111;">Кейсы</button>
+  <button onClick="{{ goContact }}" style="{{ mlb }}" style-hover="color: #111;">Контакт</button>
+  <button onClick="{{ goContact }}" style="{{ mobileCta }}" style-hover="background: #333;">Свяжитесь со мной</button>
+</div>
+
+<!-- ════════════════════ HERO ════════════════════ -->
+<section id="home" data-screen-label="Hero" style="position:relative;min-height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#111;">
+  <!-- Gradient shown while video loads -->
+  <div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;background:linear-gradient(160deg,#0a0e18 0%,#141e30 40%,#0d1520 70%,#080c14 100%);"></div>
+  <!-- B-roll video -->
+  <video id="hero-video" autoplay="" muted="" loop="" playsinline="" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1;">
+    <source src="https://res.cloudinary.com/doqysk6by/video/upload/v1781633213/Sequence_25_axlc0x.mp4" type="video/mp4">
+  </video>
+  <!-- Dark overlay for text legibility -->
+  <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.48);z-index:1;"></div>
+  <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(to bottom,rgba(0,0,0,0.25) 0%,rgba(0,0,0,0.05) 45%,rgba(0,0,0,0.45) 100%);z-index:2;"></div>
+
+  <!-- Centered content -->
+  <div style="{{ heroContent }}">
+    <h1 id="hero-title" style="{{ heroTitle }}">Сәлем, я Димаш.</h1>
+    <p id="hero-sub" style="{{ heroSub }}">Видеограф в сфере недвижимости</p>
+    <div id="hero-cta" style="display:flex;justify-content:center;margin-top:24px;">
+      <button onClick="{{ goContact }}" style="{{ heroCta }}" style-hover="background:rgba(255,255,255,0.88);transform:translateY(-2px);">Свяжитесь со мной</button>
+    </div>
+  </div>
+
+  <div style="position:absolute;bottom:44px;left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:12px;">
+    <span style="font-size:10px;font-weight:600;letter-spacing:0.32em;color:rgba(255,255,255,0.55);text-transform:uppercase;">Прокрутить</span>
+    <div style="width:4px;height:52px;border-radius:2px;background:linear-gradient(180deg,rgba(255,255,255,0.75),transparent);animation:scrollDrop 2.4s ease-in-out infinite;"></div>
+  </div>
+</section>
+
+<!-- ════════════════════ PROCESS ════════════════════ -->
+<section id="process" data-screen-label="Process" style="{{ processSecStyle }}">
+  <div id="process-sticky" style="{{ processStickyStyle }}">
+    <div style="{{ processInner }}">
+
+      <!-- Left col: title -->
+      <div style="{{ processHeaderDiv }}">
+        <h2 style="{{ h2 }}">Как проходит<br/>работа со мной</h2>
+        <p style="{{ subtext }}">От первого звонка до финального файла</p>
+      </div>
+
+      <!-- Right col: steps accordion -->
+      <div id="process-steps-wrap" style="{{ processStepsWrap }}">
+        <sc-for list="{{ steps }}" as="step" hint-placeholder-count="5">
+          <div data-pstep style="{{ pstepRow }}">
+            <div style="display:flex;align-items:baseline;gap:20px;">
+              <span data-pstep-num>{{ step.num }}</span>
+              <div style="flex:1;min-width:0;">
+                <h3 data-pstep-title>{{ step.title }}</h3>
+                <div data-pstep-desc>
+                  <p style="{{ stepDesc }}">{{ step.desc }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ WHY ME ════════════════════ -->
+<section id="whyme" data-screen-label="Why Me" style="{{ whiteSec }}">
+  <div style="{{ inner }}">
+    <div style="margin-bottom:80px;text-align:center;">
+      <h2 style="{{ h2 }}">Почему работа со мной?</h2>
+    </div>
+    <div style="{{ whyGrid }}">
+      <sc-for list="{{ whyPoints }}" as="pt" hint-placeholder-count="4">
+        <div data-reveal="" style="{{ whyItem }}">
+          <p style="font-size:11px;font-weight:700;letter-spacing:0.3em;color:#1a4fff;text-transform:uppercase;margin-bottom:18px;">{{ pt.id }}</p>
+          <h3 style="{{ whyTitle }}">{{ pt.title }}</h3>
+          <p style="{{ whyDesc }}">{{ pt.desc }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ CASES ════════════════════ -->
+<section id="cases" data-screen-label="Cases" style="{{ darkSec }}">
+  <div style="{{ inner }}">
+    <div style="margin-bottom:64px;">
+      <p style="font-size:11px;font-weight:600;letter-spacing:0.3em;color:rgba(255,255,255,0.35);text-transform:uppercase;margin-bottom:14px;">Портфолио</p>
+      <h2 style="{{ darkH2 }}">Strongest Cases<br>за Рубежом</h2>
+    </div>
+    <div style="{{ casesGrid }}">
+      <sc-for list="{{ cases }}" as="c" hint-placeholder-count="3">
+        <div data-reveal="" style="position:relative;aspect-ratio:9/16;overflow:hidden;cursor:pointer;border-radius:12px;transition:transform 0.55s cubic-bezier(0.16,1,0.3,1);" style-hover="transform:scale(1.028);">
+          <div style="{{ c.bg }}"></div>
+          <div style="position:absolute;top:0;right:0;bottom:0;left:0;background:linear-gradient(to top,rgba(0,0,0,0.82) 0%,rgba(0,0,0,0.08) 55%,transparent 100%);"></div>
+          <div style="position:absolute;top:0;right:0;bottom:0;left:0;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+            <span style="font-size:10px;letter-spacing:0.22em;color:rgba(255,255,255,0.09);text-transform:uppercase;font-weight:600;">[ Вставьте 9:16 видео ]</span>
+          </div>
+          <div style="position:absolute;top:20px;right:20px;background:#fff;color:#111;font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;padding:6px 14px;">VIDEO</div>
+          <div style="position:absolute;bottom:28px;left:24px;right:24px;">
+            <p style="font-size:11px;letter-spacing:0.28em;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:8px;font-weight:600;">{{ c.location }}</p>
+            <p style="font-size:19px;font-weight:700;color:#fff;line-height:1.3;">{{ c.title }}</p>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ CONTACT ════════════════════ -->
+<section id="contact" data-screen-label="Contact" style="{{ creamSec }}">
+  <div style="max-width:680px;margin:0 auto;display:flex;flex-direction:column;align-items:center;text-align:center;gap:28px;">
+    <p style="{{ label }}">Контакт</p>
+    <h2 data-reveal="" style="{{ h2 }}">Свяжитесь со мной<br>по поводу цены</h2>
+    <p data-reveal="" style="{{ subtext }}; max-width:400px;">Готов обсудить ваш проект и предложить оптимальное решение для вашего объекта.</p>
+    <div data-reveal="" style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:4px;">
+      <a href="mailto:hello@daaidyn.com" style="{{ contactLink }}" style-hover="background:#111;color:#fff;border-color:#111;">hello@daaidyn.com</a>
+      <a href="tel:+70000000000" style="{{ contactLink }}" style-hover="background:#111;color:#fff;border-color:#111;">+7 (000) 000-00-00</a>
+    </div>
+    <button data-reveal="" onClick="{{ goContact }}" style="{{ darkBtn }}" style-hover="background:#333;transform:translateY(-2px);">Написать сейчас</button>
+  </div>
+</section>
+
+<!-- ════════════════════ FOOTER ════════════════════ -->
+<footer data-screen-label="Footer" style="{{ footerStyle }}">
+  <div style="{{ inner }}; display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;">
+    <span style="font-size:14px;font-weight:700;letter-spacing:0.08em;color:#999;text-transform:lowercase;">da.aidyn</span>
+    <div style="display:flex;gap:22px;align-items:center;">
+      <a href="#" aria-label="Instagram" style="{{ socialIcon }}" style-hover="color:#111;">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="2" y="2" width="16" height="16" rx="5"></rect><circle cx="10" cy="10" r="3.8"></circle><circle cx="15" cy="5" r="1.2" fill="currentColor" stroke="none"></circle></svg>
+      </a>
+      <a href="#" aria-label="YouTube" style="{{ socialIcon }}" style-hover="color:#111;">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="1" y="5" width="18" height="11" rx="3"></rect><path d="M8 7.5l5.5 2.5-5.5 2.5V7.5z" fill="currentColor" stroke="none"></path></svg>
+      </a>
+      <a href="#" aria-label="TikTok" style="{{ socialIcon }}" style-hover="color:#111;">
+        <svg width="17" height="20" viewBox="0 0 17 20" fill="currentColor"><path d="M12.5 0h-3v13.8a2.7 2.7 0 01-2.7 2.7 2.7 2.7 0 01-2.7-2.7 2.7 2.7 0 012.7-2.7c.25 0 .49.03.72.09V8.1a5.7 5.7 0 00-.72-.05A5.75 5.75 0 001 13.8 5.75 5.75 0 006.8 19.55a5.75 5.75 0 005.75-5.75V6.35a8.6 8.6 0 005.05 1.6V4.9A5.75 5.75 0 0112.5 0z"></path></svg>
+      </a>
+    </div>
+    <span style="font-size:12px;font-weight:500;color:#aaa;">© 2026 da.aidyn · All rights reserved</span>
+  </div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    w: typeof window !== 'undefined' ? window.innerWidth : 1280,
+    menuOpen: false,
+    scrolled: false
+  };
+
+  steps = [
+    { num: '01', title: 'Знакомство и консультация', desc: 'Мы начинаем с короткого созвона или переписки, где я узнаю всё необходимое о вашем объекте. Обсуждаем цели, бюджет, сроки и стиль подачи. Я помогу вам определить, какой формат видео лучше всего подойдёт для вашей аудитории и площадок размещения.' },
+    { num: '02', title: 'Подготовка к съёмке', desc: 'После согласования всех деталей я составляю подробный план съёмки. Мы определяем дату, время, список необходимых кадров и любые дополнительные элементы: аэросъёмка дроном, виды района, детальные планы отделки. С моей стороны вы получаете чёткие рекомендации по подготовке объекта к съёмке.' },
+    { num: '03', title: 'День съёмки', desc: 'В назначенный день я приезжаю на объект со всем профессиональным оборудованием. Снимаю интерьеры, экстерьер, детали и аэропланы с дрона. Работаю быстро и аккуратно, не мешая вашему графику. Моя цель — поймать атмосферу объекта и показать его с лучшей стороны.' },
+    { num: '04', title: 'Монтаж, правки и передача материала', desc: 'После съёмки я перехожу к монтажу: цветокоррекция, подбор музыки, графика и брендинг. Вы получаете готовый вариант для просмотра и можете внести правки. После вашего одобрения передаю все финальные файлы в форматах, готовых для публикации на сайте, в Instagram, YouTube, TikTok и в рекламных кампаниях.' },
+    { num: '05', title: 'Бонус — AI-усиление контента', desc: 'В дополнение к стандартной работе я использую передовые AI-инструменты, в том числе Higgsfield, чтобы вывести ваш контент на новый уровень без дополнительных съёмочных дней. Это могут быть cinematic-эффекты, смена атмосферы на видео, дополнительные короткие клипы для Reels и TikTok или визуализация пустых помещений.' }
+  ];
+
+  whyPoints = [
+    { id: '01', title: 'Быстрые сроки', desc: 'Я знаю, как дорого время в недвижимости. Поэтому готовые материалы вы получаете уже через 48–72 часа после съёмки — и объект сразу идёт в работу.' },
+    { id: '02', title: 'Международный опыт', desc: 'Работал с объектами в разных странах и форматах. Понимаю, как выглядит качество на международном уровне, и стараюсь держать эту планку в каждом проекте.' },
+    { id: '03', title: 'Один человек от начала до конца', desc: 'Не нужно объяснять задачу трём разным людям. Я веду проект сам — от первого звонка до финального файла.' },
+    { id: '04', title: 'Понимаю рынок недвижимости', desc: 'Я не просто видеограф. Я понимаю, что хочет увидеть покупатель, что важно агенту и как мыслит застройщик. Это меняет всё.' }
+  ];
+
+  cases = [
+    { id: 'c1', location: 'Dubai, UAE',       title: 'Luxury Villa · Palm Jumeirah',    bg: { position:'absolute',top:0,right:0,bottom:0,left:0, background:'linear-gradient(160deg,#0b1828 0%,#162848 55%,#070e18 100%)' } },
+    { id: 'c2', location: 'Istanbul, Turkey', title: 'Penthouse · Bosphorus View',       bg: { position:'absolute',top:0,right:0,bottom:0,left:0, background:'linear-gradient(160deg,#18080c 0%,#2c1020 55%,#0e0508 100%)' } },
+    { id: 'c3', location: 'London, UK',       title: 'Heritage Estate · Kensington',     bg: { position:'absolute',top:0,right:0,bottom:0,left:0, background:'linear-gradient(160deg,#090a0e 0%,#141620 55%,#060608 100%)' } }
+  ];
+
+  componentDidMount() {
+    const onResize = () => this.setState({ w: window.innerWidth });
+    const onScroll = () => this.setState({ scrolled: window.scrollY > 60 });
+    window.addEventListener('resize', onResize);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    this._off = () => {
+      window.removeEventListener('resize', onResize);
+      window.removeEventListener('scroll', onScroll);
+    };
+
+    // Hero entrance — applied once, safe from re-renders
+    [
+      ['hero-label', '0.7s cubic-bezier(0.16,1,0.3,1) 0.3s'],
+      ['hero-title', '1.1s cubic-bezier(0.16,1,0.3,1) 0.55s'],
+      ['hero-sub',   '0.9s cubic-bezier(0.16,1,0.3,1) 0.82s'],
+      ['hero-cta',   '0.8s cubic-bezier(0.16,1,0.3,1) 1.1s']
+    ].forEach(([id, timing]) => {
+      const el = document.getElementById(id);
+      if (el) { el.style.opacity = '0'; el.style.animation = `heroIn ${timing} both`; }
+    });
+
+    // Force-mute + loop via JS — React doesn't reliably honour muted/loop HTML attrs
+    setTimeout(() => {
+      const v = document.getElementById('hero-video');
+      if (!v) return;
+      v.muted  = true;
+      v.volume = 0;
+      v.loop   = true;
+      // Belt-and-suspenders: restart from beginning when the video ends
+      v.addEventListener('ended', () => { v.currentTime = 0; v.play(); });
+    }, 400);
+
+    const tryInit = (n) => {
+      if (n > 30) return;
+      if (window.gsap && window.ScrollTrigger && !this._gsapReady) this._initGSAP();
+      if (!this._gsapReady) setTimeout(() => tryInit(n + 1), 150);
+    };
+    setTimeout(() => tryInit(0), 250);
+  }
+
+  componentWillUnmount() {
+    this._off && this._off();
+    if (window.ScrollTrigger) window.ScrollTrigger.getAll().forEach(t => t.kill());
+  }
+
+  _initGSAP() {
+    this._gsapReady = true;
+    const { gsap, ScrollTrigger } = window;
+    gsap.registerPlugin(ScrollTrigger);
+
+    // ── Process — sticky swipeable steps ──
+    this._initProcess();
+
+    // ── Generic reveal ──
+    gsap.utils.toArray('[data-reveal]').forEach(el => {
+      gsap.fromTo(el,
+        { opacity: 0, y: 28 },
+        { opacity: 1, y: 0, duration: 0.9, ease: 'power2.out',
+          scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' } }
+      );
+    });
+
+    // ── Section h2s (exclude process — its h2 is always sticky-visible) ──
+    gsap.utils.toArray('section:not(#process) h2').forEach(el => {
+      gsap.fromTo(el,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.9, ease: 'power2.out',
+          scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' } }
+      );
+    });
+  }
+
+  _initProcess() {
+    const { gsap, ScrollTrigger } = window;
+    const section  = document.getElementById('process');
+    if (!section) return;
+    const titleEls = gsap.utils.toArray('[data-pstep-title]');
+    const descEls  = gsap.utils.toArray('[data-pstep-desc]');
+    const numEls   = gsap.utils.toArray('[data-pstep-num]');
+    const N = titleEls.length;
+    if (N < 2) return;
+
+    const mob          = window.innerWidth < 768;
+    const activeSize   = mob ? '22px' : '26px';
+    const inactiveSize = mob ? '15px' : '16px';
+    const mt           = mob ? '10px' : '14px';
+    let current = 0;
+
+    // Measure heights (without relying on GSAP height:'auto' in timeline)
+    const heights = descEls.map(el => {
+      el.style.cssText += ';height:auto;visibility:hidden;';
+      const h = el.scrollHeight;
+      el.style.height = '0px';
+      el.style.visibility = '';
+      return Math.max(h, 40);
+    });
+
+    // ── Initial state: step 0 active ──
+    gsap.set(titleEls[0], { fontSize: activeSize, fontWeight: 700, color: '#111' });
+    gsap.set(descEls[0],  { height: heights[0], opacity: 1, marginTop: mt });
+    gsap.set(numEls[0],   { color: '#1a4fff', fontWeight: 700 });
+    for (let i = 1; i < N; i++) {
+      gsap.set(titleEls[i], { fontSize: inactiveSize, fontWeight: 500, color: 'rgba(0,0,0,0.28)' });
+      gsap.set(descEls[i],  { height: 0, opacity: 0, marginTop: 0 });
+      gsap.set(numEls[i],   { color: 'rgba(0,0,0,0.28)', fontWeight: 500 });
+    }
+
+    // ── Transition function — fired on snap complete only (no scrub reflow) ──
+    const activate = (idx) => {
+      if (idx === current) return;
+      const prev = current;
+      current = idx;
+      const dur = 0.46;
+
+      // Kill any in-flight tweens
+      gsap.killTweensOf([...titleEls, ...descEls, ...numEls]);
+
+      // Instantly reset steps that are neither prev nor next (handles fast scroll skip)
+      for (let i = 0; i < N; i++) {
+        if (i !== prev && i !== idx) {
+          gsap.set(titleEls[i], { fontSize: inactiveSize, fontWeight: 500, color: 'rgba(0,0,0,0.28)' });
+          gsap.set(descEls[i],  { height: 0, opacity: 0, marginTop: 0 });
+          gsap.set(numEls[i],   { color: 'rgba(0,0,0,0.28)', fontWeight: 500 });
+        }
+      }
+
+      // Collapse prev
+      gsap.to(titleEls[prev], { fontSize: inactiveSize, fontWeight: 500, color: 'rgba(0,0,0,0.28)', duration: dur, ease: 'power2.inOut' });
+      gsap.to(descEls[prev],  { height: 0, opacity: 0, marginTop: 0, duration: dur * 0.85, ease: 'power2.inOut' });
+      gsap.to(numEls[prev],   { color: 'rgba(0,0,0,0.28)', fontWeight: 500, duration: dur, ease: 'power2.inOut' });
+
+      // Expand current
+      gsap.to(titleEls[idx],  { fontSize: activeSize, fontWeight: 700, color: '#111', duration: dur, ease: 'power2.inOut', delay: 0.06 });
+      gsap.to(descEls[idx],   { height: heights[idx], opacity: 1, marginTop: mt, duration: dur, ease: 'power2.inOut', delay: 0.06 });
+      gsap.to(numEls[idx],    { color: '#1a4fff', fontWeight: 700, duration: dur, ease: 'power2.inOut', delay: 0.06 });
+    };
+
+    // Lightweight proxy — GSAP scrubs a plain number (zero DOM reflow).
+    // onUpdate fires every frame but activate() is guarded by idx !== current.
+    const proxy = { v: 0 };
+    const tl = gsap.timeline();
+    tl.to(proxy, {
+      v: N - 1, ease: 'none', duration: 1,
+      onUpdate: () => {
+        activate(Math.min(Math.max(Math.round(proxy.v), 0), N - 1));
+      }
+    });
+
+    ScrollTrigger.create({
+      trigger: section,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 0.4,
+      animation: tl,
+      snap: {
+        snapTo: 1 / (N - 1),
+        duration: { min: 0.35, max: 0.55 },
+        delay: 0.05,
+        ease: 'power2.inOut'
+      }
+    });
+  }
+
+  renderVals() {
+    const { w, menuOpen, scrolled } = this.state;
+    const mob = w < 768;
+    const mid = w < 1100;
+    const sp   = mob ? '80px 20px' : '128px 56px';
+    const cream = '#f8f8f5';
+    const nodeSize = mob ? '40px' : '50px';
+
+    const scrollTo = (id) => {
+      const el = document.getElementById(id);
+      if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 72, behavior: 'smooth' });
+      this.setState({ menuOpen: false });
+    };
+
+    const nlbBase = {
+      background: 'none', border: 'none', cursor: 'pointer',
+      fontFamily: "'General Sans', sans-serif", fontSize: '11px', fontWeight: 600,
+      letterSpacing: '0.18em', textTransform: 'uppercase', padding: 0,
+      transition: 'color 0.2s',
+      color: scrolled ? '#888' : 'rgba(255,255,255,0.6)'
+    };
+
+    const darkBtn = {
+      background: '#111', border: 'none', color: '#fff', cursor: 'pointer',
+      fontFamily: "'General Sans', sans-serif", fontSize: '14px', fontWeight: 700,
+      letterSpacing: '0.05em', padding: '15px 40px', borderRadius: '4px',
+      transition: 'background 0.2s, transform 0.2s'
+    };
+
+    return {
+      steps: this.steps, whyPoints: this.whyPoints, cases: this.cases,
+      menuIcon: menuOpen ? '✕' : '☰',
+
+      goHome:    () => scrollTo('home'),
+      goProcess: () => scrollTo('process'),
+      goCases:   () => scrollTo('cases'),
+      goContact: () => scrollTo('contact'),
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+
+      // NAV
+      navStyle: {
+        position: 'fixed', top: 0, left: 0, right: 0, height: '72px', zIndex: 100,
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '24px',
+        padding: mob ? '0 20px' : '0 56px',
+        background: scrolled ? 'rgba(255,255,255,0.92)' : 'transparent',
+        borderBottom: scrolled ? '1px solid rgba(0,0,0,0.07)' : '1px solid transparent',
+        backdropFilter: scrolled ? 'blur(24px)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(24px)' : 'none',
+        transition: 'background 0.4s, border-color 0.4s'
+      },
+      navLogo: {
+        fontSize: '15px', fontWeight: 700, letterSpacing: '0.08em',
+        textTransform: 'lowercase', userSelect: 'none',
+        color: scrolled ? '#111' : '#fff'
+      },
+      navLinks: { display: mob ? 'none' : 'flex', gap: '36px', alignItems: 'center', flex: 1, justifyContent: 'center' },
+      nlb: nlbBase,
+      nlbHover: { color: scrolled ? '#111' : '#fff' },
+      navCta: {
+        display: mob ? 'none' : 'flex', alignItems: 'center',
+        ...darkBtn,
+        background: scrolled ? '#111' : 'rgba(255,255,255,0.15)',
+        border: scrolled ? 'none' : '1.5px solid rgba(255,255,255,0.55)',
+        padding: '10px 22px', fontSize: '12px', borderRadius: '4px'
+      },
+      navCtaHover: { background: scrolled ? '#333' : 'rgba(255,255,255,0.28)' },
+      hamBtn: {
+        display: mob ? 'flex' : 'none', background: 'none', border: 'none',
+        color: scrolled ? '#111' : '#fff', fontSize: '20px', cursor: 'pointer',
+        alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px', lineHeight: 1, padding: '4px'
+      },
+      mobileMenu: {
+        display: menuOpen && mob ? 'flex' : 'none',
+        position: 'fixed', top: '72px', left: 0, right: 0,
+        background: 'rgba(255,255,255,0.97)', backdropFilter: 'blur(24px)',
+        flexDirection: 'column', padding: '28px 24px', gap: '26px',
+        zIndex: 99, borderBottom: '1px solid rgba(0,0,0,0.07)'
+      },
+      mlb: { ...nlbBase, fontSize: '14px', letterSpacing: '0.14em', color: '#888' },
+      mobileCta: { ...darkBtn, padding: '14px 28px', marginTop: '8px' },
+
+      // HERO
+      heroContent: {
+        position: 'relative', zIndex: 3,
+        padding: mob ? '0 24px' : '0 56px',
+        maxWidth: '780px', width: '100%',
+        display: 'flex', flexDirection: 'column', gap: '18px',
+        alignItems: 'center', textAlign: 'center'
+      },
+      heroTitle: {
+        fontSize: mob ? '54px' : mid ? '78px' : '108px',
+        fontWeight: 800, letterSpacing: '-0.03em',
+        color: '#fff', lineHeight: 1.04, margin: 0
+      },
+      heroSub: {
+        fontSize: mob ? '19px' : '26px',
+        fontWeight: 500, color: 'rgba(255,255,255,0.62)',
+        lineHeight: 1.5, margin: 0
+      },
+      heroCta: {
+        background: '#fff', border: 'none', color: '#111', cursor: 'pointer',
+        fontFamily: "'General Sans', sans-serif", fontSize: mob ? '14px' : '15px', fontWeight: 700,
+        letterSpacing: '0.04em', padding: mob ? '14px 36px' : '17px 48px', borderRadius: '4px',
+        transition: 'background 0.2s, transform 0.2s'
+      },
+
+      // SHARED SECTION STYLES
+      inner:   { maxWidth: '1100px', margin: '0 auto' },
+      creamSec:  { padding: sp, background: cream },
+      whiteSec:  { padding: sp, background: '#fff' },
+      darkSec:   { padding: sp, background: '#080808' },
+      footerStyle: { padding: mob ? '32px 20px' : '44px 56px', background: '#fff', borderTop: '1px solid rgba(0,0,0,0.08)' },
+
+      label:   { fontSize: '11px', fontWeight: 700, letterSpacing: '0.34em', color: '#aaa', textTransform: 'uppercase', margin: '0 0 16px' },
+      h2:      { fontSize: mob ? '32px' : mid ? '44px' : '56px', fontWeight: 800, color: '#111', lineHeight: 1.1, letterSpacing: '-0.03em', margin: '0 0 18px' },
+      darkH2:  { fontSize: mob ? '32px' : mid ? '44px' : '56px', fontWeight: 800, color: '#fff', lineHeight: 1.1, letterSpacing: '-0.03em', margin: '0 0 18px' },
+      subtext: { fontSize: '16px', fontWeight: 500, color: '#888', lineHeight: 1.8 },
+
+      // PROCESS — sticky 2-col desktop
+      processSecStyle:    { position: 'relative', background: cream, height: (this.steps.length * 100) + 'vh', borderTop: '1px solid rgba(0,0,0,0.06)' },
+      processStickyStyle: { position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', display: 'flex', alignItems: 'center', background: cream },
+      processInner: {
+        maxWidth: '1280px', margin: '0 auto', width: '100%',
+        display: 'grid',
+        gridTemplateColumns: mob ? '1fr' : '38% 1fr',
+        gap: mob ? '32px' : '10%',
+        alignItems: 'center',
+        padding: mob ? '88px 20px 48px' : '0 56px'
+      },
+      processHeaderDiv: {},
+      processStepsWrap:  { overflow: 'hidden', display: 'flex', flexDirection: 'column', justifyContent: 'center' },
+      pstepRow:  { paddingBottom: mob ? '16px' : '20px', borderBottom: '1px solid rgba(0,0,0,0.07)', marginBottom: mob ? '14px' : '18px' },
+      stepDesc:  { fontSize: mob ? '14px' : '15px', fontWeight: 500, color: '#777', lineHeight: 1.9, maxWidth: '520px', textWrap: 'pretty' },
+
+      // WHY ME — editorial 2×2, no card boxes
+      whyGrid: {
+        display: 'grid',
+        gridTemplateColumns: mob ? '1fr' : '1fr 1fr',
+        gap: mob ? '48px 0' : '64px 80px'
+      },
+      whyItem:  { display: 'flex', flexDirection: 'column' },
+      whyTitle: { fontSize: mob ? '20px' : '24px', fontWeight: 700, color: '#111', margin: '0 0 14px', lineHeight: 1.3 },
+      whyDesc:  { fontSize: mob ? '15px' : '16px', fontWeight: 500, color: '#777', lineHeight: 1.85 },
+
+      // CASES
+      casesGrid: { display: 'grid', gridTemplateColumns: mob ? '1fr' : '1fr 1fr 1fr', gap: mob ? '14px' : '16px' },
+
+      // CONTACT
+      contactLink: {
+        fontSize: '15px', fontWeight: 600, color: '#111',
+        textDecoration: 'none', padding: '13px 26px',
+        border: '2px solid rgba(0,0,0,0.18)', borderRadius: '4px',
+        background: 'transparent', transition: 'background 0.2s, color 0.2s, border-color 0.2s', letterSpacing: '0.01em'
+      },
+      darkBtn,
+
+      // FOOTER
+      socialIcon: { color: '#aaa', transition: 'color 0.2s', display: 'flex', alignItems: 'center' }
+    };
+  }
+}
+</script>
+</body>
+</html>

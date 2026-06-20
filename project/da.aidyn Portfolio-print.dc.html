@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: #080808; color: #e8e2dc; font-family: 'Manrope', sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    ::selection { background: rgba(232,226,220,0.15); }
+    @keyframes heroReveal { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeUp { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes lineGrow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  </style>
+</helmet>
+
+<!-- FIXED NAV -->
+<nav style="{{ navStyle }}">
+  <button onClick="{{ scrollHome }}" style="background: none; border: none; cursor: pointer; color: #e8e2dc; font-family: 'Manrope', sans-serif; font-size: 15px; font-weight: 400; letter-spacing: 0.34em; text-transform: lowercase; padding: 0; white-space: nowrap;">da.aidyn</button>
+
+  <div style="{{ navLinksStyle }}">
+    <button onClick="{{ scrollHome }}" style="background: none; border: none; cursor: pointer; color: rgba(232,226,220,0.42); font-family: 'Manrope', sans-serif; font-size: 10px; font-weight: 400; letter-spacing: 0.22em; text-transform: uppercase; padding: 0; transition: color 0.25s;" style-hover="color: #e8e2dc;">Home</button>
+    <button onClick="{{ scrollPortfolio }}" style="background: none; border: none; cursor: pointer; color: rgba(232,226,220,0.42); font-family: 'Manrope', sans-serif; font-size: 10px; font-weight: 400; letter-spacing: 0.22em; text-transform: uppercase; padding: 0; transition: color 0.25s;" style-hover="color: #e8e2dc;">Portfolio</button>
+    <button onClick="{{ scrollAbout }}" style="background: none; border: none; cursor: pointer; color: rgba(232,226,220,0.42); font-family: 'Manrope', sans-serif; font-size: 10px; font-weight: 400; letter-spacing: 0.22em; text-transform: uppercase; padding: 0; transition: color 0.25s;" style-hover="color: #e8e2dc;">About</button>
+    <button onClick="{{ scrollContact }}" style="background: none; border: none; cursor: pointer; color: rgba(232,226,220,0.42); font-family: 'Manrope', sans-serif; font-size: 10px; font-weight: 400; letter-spacing: 0.22em; text-transform: uppercase; padding: 0; transition: color 0.25s;" style-hover="color: #e8e2dc;">Contact</button>
+  </div>
+
+  <div style="display: flex; align-items: center; gap: 12px;">
+    <button onClick="{{ scrollContact }}" style="{{ navCtaStyle }}" style-hover="background: rgba(232,226,220,0.07); border-color: rgba(232,226,220,0.65);">Contact Us</button>
+    <button onClick="{{ toggleMenu }}" style="{{ hamburgerStyle }}">{{ menuIcon }}</button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div style="{{ mobileMenuStyle }}">
+  <button onClick="{{ scrollHome }}" style="background: none; border: none; cursor: pointer; color: rgba(232,226,220,0.85); font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 300; letter-spacing: 0.24em; text-transform: uppercase; padding: 0; text-align: left;" style-hover="color: #e8e2dc;">Home</button>
+  <button onClick="{{ scrollPortfolio }}" style="background: none; border: none; cursor: pointer; color: rgba(232,226,220,0.85); font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 300; letter-spacing: 0.24em; text-transform: uppercase; padding: 0; text-align: left;" style-hover="color: #e8e2dc;">Portfolio</button>
+  <button onClick="{{ scrollAbout }}" style="background: none; border: none; cursor: pointer; color: rgba(232,226,220,0.85); font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 300; letter-spacing: 0.24em; text-transform: uppercase; padding: 0; text-align: left;" style-hover="color: #e8e2dc;">About</button>
+  <button onClick="{{ scrollContact }}" style="background: none; border: none; cursor: pointer; color: rgba(232,226,220,0.85); font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 300; letter-spacing: 0.24em; text-transform: uppercase; padding: 0; text-align: left;" style-hover="color: #e8e2dc;">Contact</button>
+  <div style="padding-top: 12px; border-top: 1px solid rgba(232,226,220,0.07);">
+    <button onClick="{{ scrollContact }}" style="background: transparent; border: 1px solid rgba(232,226,220,0.28); color: #e8e2dc; font-family: 'Manrope', sans-serif; font-size: 10px; font-weight: 400; letter-spacing: 0.24em; text-transform: uppercase; padding: 13px 24px; cursor: pointer; transition: border-color 0.25s;" style-hover="border-color: rgba(232,226,220,0.7);">Contact Us</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<section id="home" data-screen-label="Hero" style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 72px 24px 80px; text-align: center; position: relative;">
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 22px;">
+    <h1 data-hero-anim="logo" style="{{ heroTextStyle }}">da.aidyn</h1>
+    <p data-hero-anim="tagline" style="font-size: 10px; font-weight: 300; letter-spacing: 0.34em; color: rgba(232,226,220,0.35); text-transform: uppercase; margin: 6px 0 0;">Cinematic Stories &nbsp;·&nbsp; Captured with Intention</p>
+    <div data-hero-anim="cta" style="margin-top: 18px;">
+      <button onClick="{{ scrollContact }}" style="background: transparent; border: 1px solid rgba(232,226,220,0.28); color: #e8e2dc; font-family: 'Manrope', sans-serif; font-size: 10px; font-weight: 400; letter-spacing: 0.3em; text-transform: uppercase; padding: 16px 44px; cursor: pointer; transition: background 0.3s, border-color 0.3s;" style-hover="background: rgba(232,226,220,0.07); border-color: rgba(232,226,220,0.65);">Contact Us</button>
+    </div>
+  </div>
+  <!-- Scroll line indicator -->
+  <div data-hero-anim="scroll-indicator" style="position: absolute; bottom: 44px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 12px;">
+    <span style="font-size: 8px; letter-spacing: 0.38em; color: rgba(232,226,220,0.2); text-transform: uppercase; font-weight: 300;">Scroll</span>
+    <div data-hero-anim="scroll-line" style="width: 1px; height: 40px; background: rgba(232,226,220,0.16); transform-origin: top;"></div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio" data-screen-label="Portfolio" style="padding: {{ secPad }}; border-top: 1px solid rgba(232,226,220,0.05);">
+  <div style="max-width: 1320px; margin: 0 auto;">
+    <div data-fade style="text-align: center; margin-bottom: 52px;">
+      <p style="font-size: 9px; font-weight: 400; letter-spacing: 0.4em; color: rgba(232,226,220,0.28); text-transform: uppercase; margin-bottom: 10px;">Work</p>
+      <h2 style="font-size: 12px; font-weight: 500; letter-spacing: 0.4em; color: #e8e2dc; text-transform: uppercase; margin: 0;">Photo &amp; Video</h2>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <sc-for list="{{ projects }}" as="item" hint-placeholder-count="4">
+        <div data-fade style="position: relative; width: 100%; aspect-ratio: 16/7; overflow: hidden; cursor: pointer; transition: transform 0.7s cubic-bezier(0.16,1,0.3,1);" style-hover="transform: scale(1.007);">
+          <!-- Dynamic gradient bg -->
+          <div style="{{ item.bgStyle }}"></div>
+          <!-- Subtle stripe texture -->
+          <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; background: repeating-linear-gradient(135deg, transparent, transparent 52px, rgba(255,255,255,0.007) 52px, rgba(255,255,255,0.007) 53px);"></div>
+          <!-- Vignette overlay -->
+          <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.42) 0%, transparent 32%, transparent 62%, rgba(0,0,0,0.28) 100%);"></div>
+          <!-- Placeholder label -->
+          <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; align-items: center; justify-content: center; pointer-events: none;">
+            <span style="font-family: 'Courier New', monospace; font-size: 10px; letter-spacing: 0.22em; color: rgba(232,226,220,0.12); text-transform: uppercase;">[ {{ item.hint }} ]</span>
+          </div>
+          <!-- Project name -->
+          <div style="position: absolute; top: 24px; left: 26px; font-size: 11px; font-weight: 400; letter-spacing: 0.26em; color: #e8e2dc; text-transform: uppercase; text-shadow: 0 1px 10px rgba(0,0,0,0.5);">{{ item.name }}</div>
+          <!-- Type tag -->
+          <div style="position: absolute; top: 20px; right: 22px; font-size: 8px; font-weight: 400; letter-spacing: 0.2em; color: rgba(232,226,220,0.5); text-transform: uppercase; border: 1px solid rgba(232,226,220,0.18); padding: 4px 10px;">{{ item.tag }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" data-screen-label="About" style="padding: {{ secPad }}; border-top: 1px solid rgba(232,226,220,0.05);">
+  <div data-fade style="{{ aboutStyle }}">
+    <p style="font-size: 9px; font-weight: 400; letter-spacing: 0.34em; color: rgba(232,226,220,0.25); text-transform: uppercase; padding-top: 6px;">About</p>
+    <div>
+      <h2 style="font-size: 26px; font-weight: 300; letter-spacing: 0.02em; color: #e8e2dc; line-height: 1.5; margin-bottom: 20px; text-wrap: pretty;">Telling stories through light, motion, and stillness.</h2>
+      <p style="font-size: 14px; font-weight: 300; color: rgba(232,226,220,0.44); line-height: 1.9; max-width: 480px; text-wrap: pretty;">da.aidyn is an independent videographer and photographer focused on cinematic craft. Available for commercial projects, editorial work, and creative collaborations worldwide.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" data-screen-label="Services" style="padding: {{ secPad }}; border-top: 1px solid rgba(232,226,220,0.05);">
+  <div style="max-width: 1320px; margin: 0 auto;">
+    <div data-fade style="text-align: center; margin-bottom: 52px;">
+      <h2 style="font-size: 12px; font-weight: 500; letter-spacing: 0.4em; color: #e8e2dc; text-transform: uppercase; margin-bottom: 10px;">Services</h2>
+      <p style="font-size: 9px; font-weight: 300; letter-spacing: 0.32em; color: rgba(232,226,220,0.28); text-transform: uppercase;">Available Worldwide</p>
+    </div>
+    <div style="{{ servGridStyle }}">
+
+      <!-- Videography -->
+      <div data-fade style="background: #080808; padding: 56px 40px; display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; transition: background 0.3s;" style-hover="background: #0d0d0d;">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="rgba(232,226,220,0.6)" stroke-width="1.2" stroke-linejoin="round">
+          <rect x="2" y="6" width="17" height="14" rx="2"></rect>
+          <path d="M19 10.5l5-2.5v10l-5-2.5V10.5z"></path>
+        </svg>
+        <div>
+          <p style="font-size: 10px; font-weight: 500; letter-spacing: 0.3em; color: #e8e2dc; text-transform: uppercase; margin-bottom: 12px;">Videography</p>
+          <p style="font-size: 13px; font-weight: 300; color: rgba(232,226,220,0.36); line-height: 1.8; max-width: 200px; margin: 0 auto;">Cinematic video for brands, events, and creative projects</p>
+        </div>
+      </div>
+
+      <!-- Photography -->
+      <div data-fade style="background: #080808; padding: 56px 40px; display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; transition: background 0.3s;" style-hover="background: #0d0d0d;">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="rgba(232,226,220,0.6)" stroke-width="1.2" stroke-linejoin="round">
+          <rect x="2" y="7" width="22" height="17" rx="2"></rect>
+          <circle cx="13" cy="15.5" r="4.5"></circle>
+          <path d="M9 7l2.5-4h3l2.5 4"></path>
+          <rect x="18" y="10" width="2.5" height="1.5" rx="0.4" fill="rgba(232,226,220,0.6)" stroke="none"></rect>
+        </svg>
+        <div>
+          <p style="font-size: 10px; font-weight: 500; letter-spacing: 0.3em; color: #e8e2dc; text-transform: uppercase; margin-bottom: 12px;">Photography</p>
+          <p style="font-size: 13px; font-weight: 300; color: rgba(232,226,220,0.36); line-height: 1.8; max-width: 200px; margin: 0 auto;">Editorial and commercial photography with a distinctive visual style</p>
+        </div>
+      </div>
+
+      <!-- Color Grading -->
+      <div data-fade style="background: #080808; padding: 56px 40px; display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; transition: background 0.3s;" style-hover="background: #0d0d0d;">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="rgba(232,226,220,0.6)" stroke-width="1.2">
+          <circle cx="13" cy="13" r="10"></circle>
+          <circle cx="13" cy="13" r="3"></circle>
+          <line x1="13" y1="3" x2="13" y2="10"></line>
+          <line x1="13" y1="16" x2="13" y2="23"></line>
+          <line x1="3" y1="13" x2="10" y2="13"></line>
+          <line x1="16" y1="13" x2="23" y2="13"></line>
+        </svg>
+        <div>
+          <p style="font-size: 10px; font-weight: 500; letter-spacing: 0.3em; color: #e8e2dc; text-transform: uppercase; margin-bottom: 12px;">Color Grading</p>
+          <p style="font-size: 13px; font-weight: 300; color: rgba(232,226,220,0.36); line-height: 1.8; max-width: 200px; margin: 0 auto;">Professional color treatment for the perfect look and feel</p>
+        </div>
+      </div>
+
+      <!-- Post-Production -->
+      <div data-fade style="background: #080808; padding: 56px 40px; display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; transition: background 0.3s;" style-hover="background: #0d0d0d;">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="rgba(232,226,220,0.6)" stroke-width="1.2" stroke-linejoin="round">
+          <rect x="2" y="4" width="22" height="18" rx="2"></rect>
+          <line x1="2" y1="10" x2="24" y2="10"></line>
+          <line x1="2" y1="16" x2="24" y2="16"></line>
+          <rect x="4" y="6" width="7" height="2" rx="0.4" fill="rgba(232,226,220,0.6)" stroke="none"></rect>
+          <rect x="14" y="12" width="7" height="2" rx="0.4" fill="rgba(232,226,220,0.6)" stroke="none"></rect>
+          <rect x="4" y="18" width="5" height="2" rx="0.4" fill="rgba(232,226,220,0.6)" stroke="none"></rect>
+        </svg>
+        <div>
+          <p style="font-size: 10px; font-weight: 500; letter-spacing: 0.3em; color: #e8e2dc; text-transform: uppercase; margin-bottom: 12px;">Post-Production</p>
+          <p style="font-size: 13px; font-weight: 300; color: rgba(232,226,220,0.36); line-height: 1.8; max-width: 200px; margin: 0 auto;">Editing, sound design, and motion graphics for final delivery</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact" data-screen-label="Contact / Footer" style="padding: {{ footerPad }}; border-top: 1px solid rgba(232,226,220,0.05);">
+  <div style="max-width: 1320px; margin: 0 auto;">
+    <div style="{{ footerColsStyle }}">
+
+      <!-- Brand -->
+      <div>
+        <p style="font-size: 15px; font-weight: 300; letter-spacing: 0.32em; color: #e8e2dc; text-transform: lowercase; margin-bottom: 14px;">da.aidyn</p>
+        <p style="font-size: 12px; font-weight: 300; letter-spacing: 0.04em; color: rgba(232,226,220,0.28); line-height: 1.75; max-width: 220px;">Cinematic stories, captured with intention.</p>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <p style="font-size: 9px; font-weight: 500; letter-spacing: 0.34em; color: rgba(232,226,220,0.45); text-transform: uppercase; margin-bottom: 20px;">Contact</p>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <a href="mailto:hello@daaidyn.com" style="font-size: 13px; font-weight: 300; color: rgba(232,226,220,0.42); text-decoration: none; letter-spacing: 0.03em; transition: color 0.2s;" style-hover="color: #e8e2dc;">hello@daaidyn.com</a>
+          <a href="tel:+10000000000" style="font-size: 13px; font-weight: 300; color: rgba(232,226,220,0.42); text-decoration: none; letter-spacing: 0.03em; transition: color 0.2s;" style-hover="color: #e8e2dc;">+1 (000) 000-0000</a>
+        </div>
+      </div>
+
+      <!-- Follow -->
+      <div>
+        <p style="font-size: 9px; font-weight: 500; letter-spacing: 0.34em; color: rgba(232,226,220,0.45); text-transform: uppercase; margin-bottom: 20px;">Follow Us</p>
+        <div style="display: flex; gap: 14px; align-items: center;">
+          <!-- Instagram -->
+          <a href="#" aria-label="Instagram" style="color: rgba(232,226,220,0.38); transition: color 0.2s; display: flex; align-items: center;" style-hover="color: #e8e2dc;">
+            <svg width="17" height="17" viewBox="0 0 17 17" fill="none" stroke="currentColor" stroke-width="1.4">
+              <rect x="2" y="2" width="13" height="13" rx="3.5"></rect>
+              <circle cx="8.5" cy="8.5" r="3.2"></circle>
+              <circle cx="12.8" cy="4.2" r="0.7" fill="currentColor" stroke="none"></circle>
+            </svg>
+          </a>
+          <!-- YouTube -->
+          <a href="#" aria-label="YouTube" style="color: rgba(232,226,220,0.38); transition: color 0.2s; display: flex; align-items: center;" style-hover="color: #e8e2dc;">
+            <svg width="17" height="17" viewBox="0 0 17 17" fill="none" stroke="currentColor" stroke-width="1.4">
+              <rect x="1" y="4" width="15" height="9" rx="2.2"></rect>
+              <path d="M6.5 6.2l5 2.3-5 2.3V6.2z" fill="currentColor" stroke="none"></path>
+            </svg>
+          </a>
+          <!-- Vimeo -->
+          <a href="#" aria-label="Vimeo" style="color: rgba(232,226,220,0.38); transition: color 0.2s; display: flex; align-items: center;" style-hover="color: #e8e2dc;">
+            <svg width="17" height="17" viewBox="0 0 17 17" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2.5 5.8c2.8-1 4.8.4 5.2 2.8l.8 3 4.5-5.5c.6-.7.5-1.8-.8-1.3-1 .4-1.4 1.8-1.4 1.8"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Copyright -->
+    <div style="border-top: 1px solid rgba(232,226,220,0.05); padding-top: 28px; display: flex; align-items: center; justify-content: center; margin-top: 64px;">
+      <p style="font-size: 10px; font-weight: 300; letter-spacing: 0.16em; color: rgba(232,226,220,0.18);">© 2026 da.aidyn · All rights reserved</p>
+    </div>
+  </div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    menuOpen: false,
+    scrolled: false,
+    w: typeof window !== 'undefined' ? window.innerWidth : 1280
+  };
+
+  projects = [
+    {
+      id: 'p1', name: 'URBAN RHYTHM', tag: 'VIDEO',
+      hint: 'cinematic reel — drop 16:9 footage here',
+      bgStyle: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, background: 'linear-gradient(155deg, #0c1421 0%, #18263a 55%, #0a0e18 100%)' }
+    },
+    {
+      id: 'p2', name: 'GOLDEN HOUR', tag: 'PHOTO',
+      hint: 'portrait series — drop 16:9 image here',
+      bgStyle: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, background: 'linear-gradient(155deg, #1c1008 0%, #2e1c0c 55%, #0e0808 100%)' }
+    },
+    {
+      id: 'p3', name: 'MONOCHROME', tag: 'PHOTO',
+      hint: 'editorial shoot — drop 16:9 image here',
+      bgStyle: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, background: 'linear-gradient(155deg, #0f0f0f 0%, #1a1a1a 55%, #080808 100%)' }
+    },
+    {
+      id: 'p4', name: 'AERIAL', tag: 'VIDEO',
+      hint: 'drone footage — drop 16:9 footage here',
+      bgStyle: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, background: 'linear-gradient(155deg, #060e18 0%, #0e1e30 55%, #040810 100%)' }
+    }
+  ];
+
+  componentDidMount() {
+    const onResize = () => this.setState({ w: window.innerWidth });
+    const onScroll = () => this.setState({ scrolled: window.scrollY > 50 });
+    window.addEventListener('resize', onResize);
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    this._setupFade();
+
+    // Apply hero animations once — scroll re-renders cannot reset them
+    [
+      ['logo',             'heroReveal 1.2s cubic-bezier(0.16,1,0.3,1) 0.2s both'],
+      ['tagline',          'fadeUp 1.4s ease 0.8s both'],
+      ['cta',              'heroReveal 1s ease 1.1s both'],
+      ['scroll-indicator', 'fadeUp 1.5s ease 2s both'],
+      ['scroll-line',      'lineGrow 1s ease 2.3s both']
+    ].forEach(([key, anim]) => {
+      const el = document.querySelector('[data-hero-anim="' + key + '"]');
+      if (el) el.style.animation = anim;
+    });
+
+    this._off = () => {
+      window.removeEventListener('resize', onResize);
+      window.removeEventListener('scroll', onScroll);
+    };
+  }
+
+  componentDidUpdate() {
+    this._setupFade();
+  }
+
+  componentWillUnmount() {
+    this._off && this._off();
+    this._io && this._io.disconnect();
+  }
+
+  _setupFade() {
+    if (!this._io) {
+      this._io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.style.opacity = '1';
+              e.target.style.transform = 'translateY(0)';
+              this._io.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.08, rootMargin: '0px 0px -32px 0px' }
+      );
+    }
+    document.querySelectorAll('[data-fade]').forEach((el) => {
+      if (!el._fadeInit) {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(28px)';
+        el.style.transition = 'opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1)';
+        this._io.observe(el);
+        el._fadeInit = true;
+      }
+    });
+  }
+
+  renderVals() {
+    const { menuOpen, scrolled, w } = this.state;
+    const mob = w < 768;
+    const mid = w < 1100;
+
+    const navScroll = (id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 72, behavior: 'smooth' });
+      this.setState({ menuOpen: false });
+    };
+
+    return {
+      mob, menuOpen, scrolled,
+      projects: this.projects,
+      menuIcon: menuOpen ? '✕' : '☰',
+      scrollHome:      () => navScroll('home'),
+      scrollPortfolio: () => navScroll('portfolio'),
+      scrollAbout:     () => navScroll('about'),
+      scrollContact:   () => navScroll('contact'),
+      toggleMenu: () => this.setState((s) => ({ menuOpen: !s.menuOpen })),
+
+      // — NAV —
+      navStyle: {
+        position: 'fixed', top: 0, left: 0, right: 0, height: '72px',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: mob ? '0 20px' : '0 56px',
+        zIndex: 100,
+        background: scrolled ? 'rgba(8,8,8,0.94)' : 'transparent',
+        borderBottom: scrolled ? '1px solid rgba(232,226,220,0.07)' : '1px solid transparent',
+        backdropFilter: scrolled ? 'blur(16px)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(16px)' : 'none',
+        transition: 'background 0.4s ease, border-color 0.4s ease'
+      },
+      navLinksStyle: {
+        display: mob ? 'none' : 'flex',
+        gap: '36px', alignItems: 'center'
+      },
+      navCtaStyle: {
+        display: mob ? 'none' : 'flex', alignItems: 'center',
+        background: 'transparent', border: '1px solid rgba(232,226,220,0.28)',
+        color: '#e8e2dc', fontFamily: "'Manrope', sans-serif",
+        fontSize: '10px', fontWeight: 400, letterSpacing: '0.24em',
+        textTransform: 'uppercase', padding: '11px 22px', cursor: 'pointer',
+        transition: 'border-color 0.25s, background 0.25s'
+      },
+      hamburgerStyle: {
+        display: mob ? 'flex' : 'none',
+        background: 'none', border: 'none', color: '#e8e2dc',
+        fontSize: '17px', cursor: 'pointer', padding: '4px',
+        alignItems: 'center', justifyContent: 'center',
+        width: '32px', height: '32px', lineHeight: 1
+      },
+      mobileMenuStyle: {
+        display: (menuOpen && mob) ? 'flex' : 'none',
+        position: 'fixed', top: '72px', left: 0, right: 0,
+        background: '#080808', flexDirection: 'column',
+        padding: '28px 20px', gap: '22px',
+        zIndex: 99, borderBottom: '1px solid rgba(232,226,220,0.07)'
+      },
+
+      // — HERO —
+      heroTextStyle: {
+        fontSize: mob ? '54px' : mid ? '78px' : '108px',
+        fontWeight: 300,
+        letterSpacing: mob ? '0.06em' : '0.12em',
+        color: '#e8e2dc',
+        textTransform: 'lowercase',
+        lineHeight: 1, margin: 0,
+        fontFamily: "'Manrope', sans-serif"
+      },
+
+      // — LAYOUT —
+      secPad: mob ? '80px 20px' : '120px 56px',
+      footerPad: mob ? '72px 20px 44px' : '100px 56px 56px',
+
+      aboutStyle: {
+        maxWidth: '1320px', margin: '0 auto',
+        display: 'grid',
+        gridTemplateColumns: mob ? '1fr' : '180px 1fr',
+        gap: mob ? '24px' : '80px',
+        alignItems: 'start'
+      },
+
+      servGridStyle: {
+        display: 'grid',
+        gridTemplateColumns: mob ? '1fr' : '1fr 1fr',
+        gap: '1px',
+        background: 'rgba(232,226,220,0.07)'
+      },
+
+      footerColsStyle: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        gap: mob ? '40px' : '60px'
+      }
+    };
+  }
+}
+</script>
+<script>
+(async () => {
+  // Prepend so page-supplied @page / break rules (deck-stage's margin:0,
+  // author CSS) keep source-order precedence over the baseline.
+  const baseCss = document.createElement('style');
+  baseCss.textContent = "@media print {\n  @page { margin: 0.5cm; }\n  html, body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }\n  section, article, figure, table { break-inside: avoid; }\n  *, *::before, *::after {\n    animation-delay: -99s !important; animation-duration: .001s !important;\n    animation-iteration-count: 1 !important; animation-fill-mode: both !important;\n    animation-play-state: running !important; transition-duration: 0s !important;\n  }\n}";
+  document.head.prepend(baseCss);
+  if (document.readyState === 'loading') {
+    await new Promise((r) => document.addEventListener('DOMContentLoaded', r, { once: true }));
+  }
+  let ds = document.querySelector('deck-stage');
+  // whenDefined never resolves when nothing registers the element, so only
+  // await it when a <deck-stage> tag exists (and race a timeout regardless).
+  if (ds && !customElements.get('deck-stage')) {
+    try {
+      await Promise.race([
+        customElements.whenDefined('deck-stage'),
+        new Promise((r) => setTimeout(r, 3000)),
+      ]);
+    } catch (e) {}
+    ds = document.querySelector('deck-stage');
+  }
+  // dc-runtime assigns window.DCLogic at init and mounts into #dc-root on
+  // DOMContentLoaded; settle on that subtree so React has rendered before
+  // print(). Non-DC pages fall through to weighing body.
+  const isDc = !ds && 'DCLogic' in window;
+  const settleRoot = ds || (isDc ? document.getElementById('dc-root') : null) || document.body;
+  if (settleRoot) {
+    // Weigh only content children — skip script/style/template so inline
+    // Babel/CSS doesn't register as stable "content" before the framework
+    // has mounted anything.
+    const MEDIA = 'img,svg,canvas,video,picture,iframe,embed,object';
+    const weigh = () => {
+      let text = 0, media = 0;
+      for (const c of settleRoot.children) {
+        const t = c.tagName;
+        if (t === 'SCRIPT' || t === 'STYLE' || t === 'TEMPLATE') continue;
+        text += (c.textContent || '').trim().length;
+        media += c.querySelectorAll(MEDIA).length + (c.matches(MEDIA) ? 1 : 0);
+      }
+      return text + media * 100;
+    };
+    // "Non-zero and stable" alone is not sufficient to mean rendered: generic
+    // body can carry a static shell while async main content is pending, and
+    // #dc-root can carry the root DC's static text while child refs are still
+    // .sc-placeholder boxes. Gate generic on readyState 'complete', and never
+    // accept stability while a dc-runtime placeholder is present.
+    const isGeneric = settleRoot === document.body;
+    const deadline = Date.now() + 15000;
+    let last = -1, stable = 0;
+    while (Date.now() < deadline) {
+      const n = weigh();
+      const ready =
+        (!isGeneric || document.readyState === 'complete') &&
+        !settleRoot.querySelector('.sc-placeholder');
+      if (n > 0 && n === last && ready) { if (++stable >= 2) break; } else { stable = 0; }
+      last = n;
+      await new Promise((r) => setTimeout(r, 250));
+    }
+  }
+  try { await document.fonts.ready; } catch (e) {}
+  // Jump every animation to its end state so print() never captures a slide
+  // mid-entrance. Ordering matters: the 0s-transition style must be live
+  // BEFORE data-deck-active is set so attribute-keyed transitions don't
+  // start a (now-0s) run from the pre-active base.
+  const st = document.createElement('style');
+  st.textContent = '*,*::before,*::after{animation-delay:-99s !important;animation-duration:.001s !important;animation-iteration-count:1 !important;animation-fill-mode:both !important;animation-play-state:running !important;transition-duration:0s !important}';
+  document.head.appendChild(st);
+  for (const d of document.querySelectorAll('deck-stage')) {
+    for (const c of d.children) {
+      const t = c.tagName;
+      if (t === 'SCRIPT' || t === 'STYLE' || t === 'TEMPLATE') continue;
+      c.setAttribute('data-deck-active', '');
+    }
+  }
+  try {
+    const sweep = () => {
+      for (const a of document.getAnimations()) {
+        try { a.finish(); } catch (e) {
+          try { a.currentTime = (a.effect && a.effect.getComputedTiming().duration) || 0; a.pause(); } catch (e2) {}
+        }
+      }
+    };
+    sweep();
+    await new Promise((r) => requestAnimationFrame(r));
+    sweep();
+    await new Promise((r) => requestAnimationFrame(r));
+  } catch (e) {}
+  setTimeout(() => { try { window.print(); } catch (e) {} }, 200);
+})();
+</script>
+</body>
+</html>
