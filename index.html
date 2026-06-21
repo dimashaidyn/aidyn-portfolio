@@ -629,13 +629,8 @@
         gap: 32px;
         padding: 88px 20px 48px;
       }
-      .process-sec {
-        height: 100vh;
-        scroll-snap-align: start;
-        scroll-snap-stop: always;
-      }
+      .process-sec { height: 100vh; }
       .process-sticky { touch-action: none; }
-      html { scroll-snap-type: y proximity; }
       .why-grid { grid-template-columns: 1fr; gap: 48px 0; }
       .why-title { font-size: 20px; }
       .why-desc { font-size: 15px; }
@@ -1014,6 +1009,24 @@
         const sticky = document.querySelector('.process-sticky');
         let startY = 0;
         let busy = false;
+        let engaged = false;
+
+        // Align the section to the viewport once it becomes dominant, so the
+        // panel locks cleanly to the screen. Confined to this section only —
+        // the rest of the page scrolls natively with no snap overhead.
+        const io = new IntersectionObserver((entries) => {
+          const r = entries[0].intersectionRatio;
+          if (r >= 0.55 && !engaged) {
+            engaged = true;
+            const top = window.scrollY + section.getBoundingClientRect().top;
+            if (Math.abs(window.scrollY - top) > 4) {
+              window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+            }
+          } else if (r < 0.3) {
+            engaged = false;
+          }
+        }, { threshold: [0, 0.3, 0.55, 1] });
+        io.observe(section);
 
         // Scroll the page out of the section, one viewport in `dir`.
         const leave = (dir) => {
