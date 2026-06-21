@@ -997,6 +997,43 @@
           ease: 'power2.inOut'
         }
       });
+
+      // ── Mobile: one swipe = exactly one step ──
+      if (mob) {
+        let touchStartY = 0;
+        let busy = false;
+
+        const stepScroll = (idx) => {
+          const rect = section.getBoundingClientRect();
+          const sectionTop = window.scrollY + rect.top;
+          const range = section.offsetHeight - window.innerHeight;
+          return sectionTop + (idx / (N - 1)) * range;
+        };
+
+        section.addEventListener('touchstart', e => {
+          if (busy) return;
+          touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        section.addEventListener('touchmove', e => {
+          const deltaY = touchStartY - e.touches[0].clientY;
+          const atTop    = current === 0     && deltaY < 0;
+          const atBottom = current === N - 1 && deltaY > 0;
+          if (!atTop && !atBottom) e.preventDefault();
+        }, { passive: false });
+
+        section.addEventListener('touchend', e => {
+          if (busy) return;
+          const deltaY = touchStartY - e.changedTouches[0].clientY;
+          if (Math.abs(deltaY) < 25) return;
+          const dir    = deltaY > 0 ? 1 : -1;
+          const target = current + dir;
+          if (target < 0 || target >= N) return;
+          busy = true;
+          window.scrollTo({ top: stepScroll(target), behavior: 'smooth' });
+          setTimeout(() => { busy = false; }, 650);
+        }, { passive: true });
+      }
     })();
 
     // ── GSAP: Generic scroll-reveal ──
