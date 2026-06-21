@@ -666,7 +666,7 @@
   <!-- ── HERO ── -->
   <section id="home" class="hero">
     <div class="hero-gradient"></div>
-    <video id="hero-video" class="hero-video" autoplay muted loop playsinline>
+    <video id="hero-video" class="hero-video" autoplay muted loop playsinline preload="auto">
       <source src="https://res.cloudinary.com/doqysk6by/video/upload/v1781633213/Sequence_25_axlc0x.mp4" type="video/mp4">
     </video>
     <div class="hero-overlay1"></div>
@@ -862,7 +862,10 @@
       v.muted  = true;
       v.volume = 0;
       v.loop   = true;
-      v.addEventListener('ended', () => { v.currentTime = 0; v.play(); });
+      const tryPlay = () => v.play().catch(() => {});
+      v.addEventListener('ended', () => { v.currentTime = 0; tryPlay(); });
+      v.addEventListener('pause', () => { if (!document.hidden) tryPlay(); });
+      v.addEventListener('canplaythrough', tryPlay, { once: true });
     })();
 
     // ── Process steps data ──
