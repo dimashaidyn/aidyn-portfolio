@@ -973,21 +973,18 @@
         gsap.to(numEls[idx],   { color: '#1a4fff', fontWeight: 700, duration: dur, ease: 'power2.inOut', delay: 0.06 });
       };
 
-      // Proxy: GSAP scrubs a plain number 0→N-1 so zero DOM reflow occurs during scroll.
-      // onUpdate fires per frame but activate() is guarded by idx !== current.
-      const proxy = { v: 0 };
-      const tl = gsap.timeline();
-      tl.to(proxy, {
-        v: N - 1,
-        ease: 'none',
-        duration: 1,
-        onUpdate: () => {
-          activate(Math.min(Math.max(Math.round(proxy.v), 0), N - 1));
-        }
-      });
-
       if (!mob) {
         // ── Desktop: scroll-scrub through steps (500vh pin) ──
+        const proxy = { v: 0 };
+        const tl = gsap.timeline();
+        tl.to(proxy, {
+          v: N - 1,
+          ease: 'none',
+          duration: 1,
+          onUpdate: () => {
+            activate(Math.min(Math.max(Math.round(proxy.v), 0), N - 1));
+          }
+        });
         ScrollTrigger.create({
           trigger: section,
           start: 'top top',
