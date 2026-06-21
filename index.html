@@ -629,6 +629,7 @@
         gap: 32px;
         padding: 88px 20px 48px;
       }
+      .process-sec { height: 100vh; }
       .why-grid { grid-template-columns: 1fr; gap: 48px 0; }
       .why-title { font-size: 20px; }
       .why-desc { font-size: 15px; }
@@ -998,40 +999,36 @@
         }
       });
 
-      // ── Mobile: one swipe = exactly one step ──
+      // ── Mobile: bypass scroll entirely, swipe drives steps directly ──
       if (mob) {
+        // Kill the ScrollTrigger — not needed on mobile
+        ScrollTrigger.getAll().forEach(st => {
+          if (st.vars.trigger === section) st.kill();
+        });
+
         let touchStartY = 0;
         let busy = false;
+        const sticky = document.querySelector('.process-sticky');
 
-        const stepScroll = (idx) => {
-          const rect = section.getBoundingClientRect();
-          const sectionTop = window.scrollY + rect.top;
-          const range = section.offsetHeight - window.innerHeight;
-          return sectionTop + (idx / (N - 1)) * range;
-        };
-
-        section.addEventListener('touchstart', e => {
+        sticky.addEventListener('touchstart', e => {
           if (busy) return;
           touchStartY = e.touches[0].clientY;
         }, { passive: true });
 
-        section.addEventListener('touchmove', e => {
-          const deltaY = touchStartY - e.touches[0].clientY;
-          const atTop    = current === 0     && deltaY < 0;
-          const atBottom = current === N - 1 && deltaY > 0;
-          if (!atTop && !atBottom) e.preventDefault();
+        sticky.addEventListener('touchmove', e => {
+          e.preventDefault(); // block scroll while inside the sticky panel
         }, { passive: false });
 
-        section.addEventListener('touchend', e => {
+        sticky.addEventListener('touchend', e => {
           if (busy) return;
           const deltaY = touchStartY - e.changedTouches[0].clientY;
-          if (Math.abs(deltaY) < 25) return;
-          const dir    = deltaY > 0 ? 1 : -1;
+          if (Math.abs(deltaY) < 25) return; // ignore taps
+          const dir    = deltaY > 0 ? 1 : -1; // up = next, down = prev
           const target = current + dir;
           if (target < 0 || target >= N) return;
           busy = true;
-          window.scrollTo({ top: stepScroll(target), behavior: 'smooth' });
-          setTimeout(() => { busy = false; }, 650);
+          activate(target);
+          setTimeout(() => { busy = false; }, 550);
         }, { passive: true });
       }
     })();
