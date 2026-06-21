@@ -629,7 +629,13 @@
         gap: 32px;
         padding: 88px 20px 48px;
       }
-      .process-sec { height: 100vh; }
+      .process-sec {
+        height: 100vh;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+      }
+      .process-sticky { touch-action: none; }
+      html { scroll-snap-type: y proximity; }
       .why-grid { grid-template-columns: 1fr; gap: 48px 0; }
       .why-title { font-size: 20px; }
       .why-desc { font-size: 15px; }
@@ -985,50 +991,54 @@
         }
       });
 
-      ScrollTrigger.create({
-        trigger: section,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 0.4,
-        animation: tl,
-        snap: {
-          snapTo: 1 / (N - 1),
-          duration: { min: 0.35, max: 0.55 },
-          delay: 0.05,
-          ease: 'power2.inOut'
-        }
-      });
-
-      // ── Mobile: bypass scroll entirely, swipe drives steps directly ──
-      if (mob) {
-        // Kill the ScrollTrigger — not needed on mobile
-        ScrollTrigger.getAll().forEach(st => {
-          if (st.vars.trigger === section) st.kill();
+      if (!mob) {
+        // ── Desktop: scroll-scrub through steps (500vh pin) ──
+        ScrollTrigger.create({
+          trigger: section,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 0.4,
+          animation: tl,
+          snap: {
+            snapTo: 1 / (N - 1),
+            duration: { min: 0.35, max: 0.55 },
+            delay: 0.05,
+            ease: 'power2.inOut'
+          }
         });
-
-        let touchStartY = 0;
-        let busy = false;
+      } else {
+        // ── Mobile: section is one screen (100vh). touch-action:none (CSS)
+        //    blocks native scroll inside the panel, so every swipe is a
+        //    discrete gesture: one swipe = exactly one step. Only a swipe
+        //    past the first/last step scrolls the page to the next section.
         const sticky = document.querySelector('.process-sticky');
+        let startY = 0;
+        let busy = false;
+
+        // Scroll the page out of the section, one viewport in `dir`.
+        const leave = (dir) => {
+          const top = window.scrollY + section.getBoundingClientRect().top;
+          const dest = dir > 0 ? top + section.offsetHeight : top - window.innerHeight;
+          busy = true;
+          window.scrollTo({ top: Math.max(0, dest), behavior: 'smooth' });
+          setTimeout(() => { busy = false; }, 600);
+        };
 
         sticky.addEventListener('touchstart', e => {
-          if (busy) return;
-          touchStartY = e.touches[0].clientY;
+          startY = e.touches[0].clientY;
         }, { passive: true });
-
-        sticky.addEventListener('touchmove', e => {
-          e.preventDefault(); // block scroll while inside the sticky panel
-        }, { passive: false });
 
         sticky.addEventListener('touchend', e => {
           if (busy) return;
-          const deltaY = touchStartY - e.changedTouches[0].clientY;
-          if (Math.abs(deltaY) < 25) return; // ignore taps
-          const dir    = deltaY > 0 ? 1 : -1; // up = next, down = prev
+          const dy = startY - e.changedTouches[0].clientY;
+          if (Math.abs(dy) < 24) return;            // ignore taps / micro-moves
+          const dir = dy > 0 ? 1 : -1;              // swipe up = next step
           const target = current + dir;
-          if (target < 0 || target >= N) return;
+          if (target < 0)  { leave(-1); return; }   // before first → scroll up
+          if (target >= N) { leave(1);  return; }   // after last  → scroll down
           busy = true;
-          activate(target);
-          setTimeout(() => { busy = false; }, 550);
+          activate(target);                          // exactly one step
+          setTimeout(() => { busy = false; }, 520);
         }, { passive: true });
       }
     })();
